@@ -28,6 +28,8 @@ python -m http.server 8000
 |---|---|
 | Data do casamento | `script.js` → `WEDDING_DATE` |
 | Chave Pix | `script.js` → `PIX_KEY` |
+| Senha(s) do convite | `script.js` → `INVITE_PASSWORDS` (lista) |
+| Itens da lista de presentes | `script.js` → `GIFTS` (nome, valor, img, priority) |
 | Textos (história, programação, padrinhos) | `index.html` |
 | Cores e fontes | `styles.css` → bloco `:root` |
 | Fotos da galeria | `script.js` → array `photos` (troque pelas suas imagens) |
@@ -47,5 +49,61 @@ const photos = ["img/foto1.jpg", "img/foto2.jpg", ...];
 - **Netlify / Vercel**: arraste a pasta ou conecte o repositório
 - **GitHub Pages**: suba os arquivos e ative o Pages
 
-## Observação sobre o RSVP
-O formulário salva as confirmações no `localStorage` do navegador (demonstração). Para receber as respostas de verdade, conecte a um backend, Google Forms/Sheets ou serviço como Formspree.
+## Confirmação com senha
+A seção "Confirmar Presença" pede uma senha do convite antes de liberar o formulário.
+As senhas aceitas ficam em `script.js` → `INVITE_PASSWORDS` (pode colocar várias).
+
+> **Atenção:** como o site é estático (GitHub Pages), a senha é validada no navegador
+> e fica visível para quem inspecionar o código-fonte. Serve para organizar os
+> convidados, não como segurança real. Para uma senha realmente secreta seria
+> necessário um backend.
+
+## Lista de presentes (sistema de cotas)
+Os itens ficam em `script.js` → `GIFTS`. Cada presente é dividido em cotas, para
+vários convidados contribuírem com partes do mesmo item. Campos:
+
+| Campo | O que é |
+|---|---|
+| `nome` | Nome do presente |
+| `valorCota` | Valor de **cada cota** (o que o convidado paga) |
+| `cotas` | Em quantas partes o presente foi dividido (total) |
+| `restam` | Quantas cotas ainda faltam |
+| `priority` | `true` destaca o item com um selo ★ |
+| `img` | URL ou caminho local da foto (ex: `img/cama.jpg`) |
+
+A barra de progresso e o texto "Restam X de Y cotas" são calculados a partir de
+`cotas` e `restam`. Quando `restam` chega a 0, o card mostra "Presente completo!"
+e o botão fica desabilitado.
+
+> **Importante:** o site é estático, então a contagem **não atualiza sozinha**.
+> Quando receber um Pix, diminua o número em `restam` e faça um novo push.
+
+## Coletar confirmações no Google Sheets
+As confirmações do formulário podem cair direto numa planilha do Google que você
+acompanha (e exporta para Excel quando quiser). Siga os passos:
+
+1. Crie uma planilha nova em <https://sheets.google.com>.
+2. No menu da planilha: **Extensões → Apps Script**.
+3. Apague o código que aparecer e **cole todo o conteúdo de `google-apps-script.gs`** (está nesta pasta).
+4. Clique em **Implantar → Nova implantação**:
+   - Tipo: **App da Web** (Web app)
+   - Executar como: **Eu mesmo** (sua conta Google)
+   - Quem pode acessar: **Qualquer pessoa** (Anyone)
+5. Autorize o acesso quando o Google pedir.
+6. Copie a **URL gerada** (termina em `/exec`).
+7. Abra `script.js` e cole essa URL na constante `SHEETS_URL`:
+   ```js
+   const SHEETS_URL = "https://script.google.com/macros/s/..../exec";
+   ```
+8. Faça commit/push dos arquivos. Pronto: cada confirmação vira uma linha na planilha
+   (Data/Hora, Nome, Vai comparecer?, Mensagem).
+
+> **Testar:** abra a URL `/exec` no navegador — deve responder "RSVP endpoint online".
+> Depois envie uma confirmação de teste no site e confira se apareceu na planilha.
+
+**Exportar para Excel:** na planilha, **Arquivo → Fazer download → Microsoft Excel (.xlsx)**.
+
+### Enquanto a URL não estiver preenchida
+Se `SHEETS_URL` ficar vazio, o formulário continua funcionando, mas as respostas
+são salvas apenas no `localStorage` do navegador de quem preencheu (backup local,
+que você não consegue acessar). Para coletar de verdade, complete os passos acima.

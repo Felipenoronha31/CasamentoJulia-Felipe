@@ -168,75 +168,21 @@
     <div class="gallery__grid" id="galleryGrid"></div>
   </section>
 
-  <!-- ===== Padrinhos ===== -->
-  <section class="party" id="padrinhos">
-    <div class="section__head reveal">
-      <p class="section__eyebrow">Ao nosso lado</p>
-      <h2 class="section__title">Padrinhos &amp; Madrinhas</h2>
-    </div>
-    <div class="party__grid party__grid--three">
-      <div class="party__col reveal">
-        <span class="party__side">Padrinhos &amp; Madrinhas</span>
-        <h3>da Julia</h3>
-        <ul>
-          <li>Maryane &amp; Cassio</li>
-          <li>Matheus &amp; Heloisa</li>
-          <li>Joice &amp; Kennedy</li>
-          <li>Elaine &amp; Joseque</li>
-          <li>Joabe &amp; Evelyn</li>
-        </ul>
-      </div>
-      <div class="party__col reveal">
-        <span class="party__side">Padrinhos &amp; Madrinhas</span>
-        <h3>do Felipe</h3>
-        <ul>
-          <li>Lucas &amp; Laura</li>
-          <li>Julia &amp; Bruno</li>
-          <li>Babu &amp; Carol</li>
-          <li>Gisele &amp; Rogério</li>
-          <li>Gisele &amp; Dalson</li>
-        </ul>
-      </div>
-      <div class="party__col reveal">
-        <span class="party__side">Cortejo</span>
-        <h3>Damas de Honra &amp; Cavalheiros</h3>
-        <ul>
-          <li>Silvia</li>
-          <li>Luan</li>
-          <li>Milena</li>
-          <li>Gabriel</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
   <!-- ===== Presentes ===== -->
   <section class="gifts" id="presentes">
     <div class="section__head reveal">
       <p class="section__eyebrow">Com carinho</p>
-      <h2 class="section__title">Lista de Presentes</h2>
+      <h2 class="section__title">Nossa Lista de Presentes</h2>
     </div>
-    <p class="gifts__intro reveal">A sua presença já é o maior presente que poderíamos receber. Mas, se desejar nos presentear, deixamos aqui algumas opções com todo o nosso carinho.</p>
-    <div class="gifts__grid">
-      <div class="gift__card reveal">
-        <div class="gift__icon">🍯</div>
-        <h3>Lua de Mel</h3>
-        <p>Ajude a tornar a nossa viagem dos sonhos inesquecível.</p>
-        <button class="btn btn--outline" data-pix>Contribuir via Pix</button>
-      </div>
-      <div class="gift__card reveal">
-        <div class="gift__icon">🏡</div>
-        <h3>Nosso Lar</h3>
-        <p>Itens para montar o nosso novo cantinho.</p>
-        <button class="btn btn--outline" data-pix>Contribuir via Pix</button>
-      </div>
-      <div class="gift__card reveal">
-        <div class="gift__icon">🎁</div>
-        <h3>Presente Livre</h3>
-        <p>Escolha um valor com o qual se sinta confortável.</p>
-        <button class="btn btn--outline" data-pix>Contribuir via Pix</button>
-      </div>
+    <div class="gifts__intro reveal">
+      <p>Preparamos este espaço com muito carinho para quem deseja contribuir com o início da nossa vida a dois. Cada contribuição representa não apenas um presente, mas um gesto de amor que vai nos acompanhar nesta nova fase.</p>
+      <ul class="gifts__notes">
+        <li>Optamos pelo <strong>Pix</strong> como forma de contribuição.</li>
+        <li>Independentemente do valor, tudo será recebido com muita gratidão.</li>
+        <li>Após a transferência, envie o comprovante para nós, assim atualizamos a disponibilidade dos itens no site. 💛</li>
+      </ul>
     </div>
+    <div class="gifts__grid" id="giftsGrid"></div>
   </section>
 
   <!-- ===== RSVP ===== -->
@@ -245,7 +191,21 @@
       <p class="section__eyebrow">Esperamos por você</p>
       <h2 class="section__title">Confirme sua Presença</h2>
     </div>
-    <form class="rsvp__form reveal" id="rsvpForm">
+    <p class="rsvp__intro reveal">Este momento é muito importante para nós. Ao confirmar sua presença, você nos ajuda a preparar tudo com carinho para celebrarmos este dia ao lado de quem faz parte da nossa história.</p>
+
+    <!-- Tela de senha -->
+    <form class="rsvp__gate reveal" id="rsvpGate">
+      <div class="gate__icon">🔒</div>
+      <div class="field">
+        <label for="senha">Senha do convite</label>
+        <input type="text" id="senha" name="senha" required placeholder="Digite a senha do seu convite" autocomplete="off" />
+      </div>
+      <button type="submit" class="btn btn--dark">Verificar senha</button>
+      <p class="rsvp__feedback" id="gateFeedback" role="status"></p>
+    </form>
+
+    <!-- Formulário (liberado após a senha) -->
+    <form class="rsvp__form reveal" id="rsvpForm" hidden>
       <div class="field">
         <label for="nome">Nome completo</label>
         <input type="text" id="nome" name="nome" required placeholder="Seu nome" />
@@ -278,7 +238,8 @@
     <div class="modal__box">
       <button class="modal__close" id="pixClose" aria-label="Fechar">&times;</button>
       <h3>Contribuir via Pix</h3>
-      <p>Use a chave abaixo para nos presentear. Muito obrigado! 💛</p>
+      <p id="pixItem" class="pix__item"></p>
+      <p>Use a chave abaixo para nos presentear. Depois, por gentileza, nos envie o comprovante. Muito obrigado! 💛</p>
       <div class="pix__key">
         <code id="pixKey">julia.felipe@casamento.com</code>
         <button class="btn btn--outline" id="pixCopy">Copiar</button>

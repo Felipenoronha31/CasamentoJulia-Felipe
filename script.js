@@ -2,6 +2,39 @@
 const WEDDING_DATE = new Date("2027-07-04T16:00:00-03:00");
 const PIX_KEY = "julia.felipe@casamento.com";
 
+/* Senhas de convite aceitas (case-insensitive).
+   Observação: por ser um site estático (GitHub Pages), a validação acontece no
+   navegador — não é segurança real, apenas organização dos convidados.
+   Adicione quantas quiser à lista. */
+const INVITE_PASSWORDS = ["F4J45"];
+
+/* URL do Google Apps Script que recebe as confirmações e grava na planilha.
+   Siga o passo a passo no README (seção "Coletar confirmações no Google Sheets")
+   e cole aqui a URL que termina em /exec. Enquanto estiver vazio, as
+   confirmações ficam salvas apenas no navegador (localStorage) como backup. */
+const SHEETS_URL = "https://script.google.com/macros/s/AKfycbyWFVQg7nDxCNb_OCaeq-3ddBZapTEvq2-FjRfZFDYgK56fstnFvBheqA68pajwYDZsNA/exec";
+
+/* Lista de presentes com sistema de COTAS.
+   - valorCota: valor de CADA cota (o que o convidado paga).
+   - cotas: em quantas partes o presente foi dividido (total).
+   - restam: quantas cotas ainda faltam (atualize à mão quando receber um Pix).
+   - priority: true marca os itens mais desejados com um selo.
+   - img: troque pela sua foto, ex: "img/cama.jpg".
+
+   Como o site é estático (GitHub Pages), a contagem NÃO muda sozinha.
+   Quando receber uma contribuição, diminua "restam" e dê push. */
+const GIFTS = [
+  { nome: "Cama de casal box",      valorCota: 150, cotas: 10, restam: 10, img: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=600&q=80", priority: true },
+  { nome: "Geladeira frost free",   valorCota: 200, cotas: 10, restam: 10, img: "https://images.unsplash.com/photo-1584568694244-14fbdf83bd30?auto=format&fit=crop&w=600&q=80", priority: true },
+  { nome: "Máquina de lavar",       valorCota: 180, cotas: 10, restam: 10, img: "https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?auto=format&fit=crop&w=600&q=80", priority: true },
+  { nome: "Fogão 5 bocas",          valorCota: 120, cotas: 10, restam: 10, img: "https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=600&q=80", priority: false },
+  { nome: "Micro-ondas",            valorCota: 100, cotas: 10, restam: 10, img: "https://images.unsplash.com/photo-1574269909862-7e1d70bb8078?auto=format&fit=crop&w=600&q=80", priority: false },
+  { nome: "Jogo de panelas",        valorCota: 90,  cotas: 10, restam: 10, img: "https://images.unsplash.com/photo-1584990347449-39b3f3b2c38b?auto=format&fit=crop&w=600&q=80", priority: false },
+  { nome: "Jogo de cama casal",     valorCota: 80,  cotas: 10, restam: 10, img: "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=600&q=80", priority: false },
+  { nome: "Jogo de jantar",         valorCota: 100, cotas: 10, restam: 10, img: "https://images.unsplash.com/photo-1578474846511-04ba529f0b88?auto=format&fit=crop&w=600&q=80", priority: false },
+  { nome: "Cota para a Lua de Mel", valorCota: 150, cotas: 10, restam: 10, img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80", priority: true },
+];
+
 /* ===== Loader ===== */
 window.addEventListener("load", () => {
   setTimeout(() => document.getElementById("loader").classList.add("hide"), 700);
@@ -72,6 +105,30 @@ photos.forEach((id, i) => {
   galleryGrid.appendChild(fig);
 });
 
+/* ===== Gifts render ===== */
+const BRL = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
+const giftsGrid = document.getElementById("giftsGrid");
+GIFTS.forEach((g) => {
+  const pagas = g.cotas - g.restam;
+  const pct = g.cotas > 0 ? Math.round((pagas / g.cotas) * 100) : 0;
+  const esgotado = g.restam <= 0;
+
+  const card = document.createElement("div");
+  card.className = "gift__card reveal" + (esgotado ? " gift__card--done" : "");
+  card.innerHTML = `
+    ${g.priority ? '<span class="gift__badge" title="Item mais desejado">★</span>' : ""}
+    <div class="gift__photo"><img loading="lazy" src="${g.img}" alt="${g.nome}" /></div>
+    <h3>${g.nome}</h3>
+    <p class="gift__price">${BRL.format(g.valorCota)}</p>
+    <div class="gift__progress"><span style="width:${pct}%"></span></div>
+    <p class="gift__count">${esgotado ? "Presente completo! 💛" : `Restam: ${g.restam} de ${g.cotas}`}</p>
+    <button class="btn btn--outline" data-pix data-gift="${g.nome}" data-cota="${g.valorCota}" ${esgotado ? "disabled" : ""}>
+      ${esgotado ? "Concluído" : "Fazer Pix"}
+    </button>
+  `;
+  giftsGrid.appendChild(card);
+});
+
 /* ===== Scroll reveal ===== */
 const io = new IntersectionObserver((entries) => {
   entries.forEach(e => {
@@ -83,33 +140,90 @@ const io = new IntersectionObserver((entries) => {
 }, { threshold: 0.15 });
 document.querySelectorAll(".reveal").forEach(el => io.observe(el));
 
-/* ===== RSVP form ===== */
+/* ===== RSVP: gate de senha ===== */
+const gate = document.getElementById("rsvpGate");
+const gateFeedback = document.getElementById("gateFeedback");
 const form = document.getElementById("rsvpForm");
 const feedback = document.getElementById("rsvpFeedback");
-form.addEventListener("submit", (e) => {
+
+const normalized = INVITE_PASSWORDS.map(p => p.trim().toLowerCase());
+
+gate.addEventListener("submit", (e) => {
   e.preventDefault();
+  const tentativa = document.getElementById("senha").value.trim().toLowerCase();
+  if (normalized.includes(tentativa)) {
+    gate.hidden = true;
+    form.hidden = false;
+    form.classList.add("in");
+    document.getElementById("nome").focus();
+  } else {
+    gateFeedback.textContent = "Senha incorreta. Confira o convite e tente novamente.";
+    gate.classList.remove("shake");
+    void gate.offsetWidth; // reinicia a animação
+    gate.classList.add("shake");
+  }
+});
+
+/* ===== RSVP: envio ===== */
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const btn = form.querySelector('button[type="submit"]');
   const nome = document.getElementById("nome").value.trim();
   const presenca = form.querySelector('input[name="presenca"]:checked').value;
-  // Persiste localmente (demo). Para produção, enviar para um backend/planilha.
+  const mensagem = document.getElementById("mensagem").value.trim();
+  const dados = { nome, presenca, mensagem, data: new Date().toISOString() };
+
+  // Backup local (caso a planilha falhe ou ainda não esteja configurada).
   const list = JSON.parse(localStorage.getItem("rsvp") || "[]");
-  list.push({
-    nome,
-    presenca,
-    mensagem: document.getElementById("mensagem").value.trim(),
-    data: new Date().toISOString(),
-  });
+  list.push(dados);
   localStorage.setItem("rsvp", JSON.stringify(list));
-  feedback.textContent = presenca === "sim"
-    ? `Obrigado, ${nome.split(" ")[0]}! Sua presença foi confirmada. 💛`
-    : `Que pena, ${nome.split(" ")[0]}. Sentiremos sua falta, obrigado por avisar.`;
-  form.reset();
+
+  const primeiroNome = nome.split(" ")[0];
+  const sucesso = () => {
+    feedback.textContent = presenca === "sim"
+      ? `Obrigado, ${primeiroNome}! Sua presença foi confirmada. 💛`
+      : `Que pena, ${primeiroNome}. Sentiremos sua falta, obrigado por avisar.`;
+    form.reset();
+  };
+
+  // Sem planilha configurada: só o backup local.
+  if (!SHEETS_URL) { sucesso(); return; }
+
+  // Envia para o Google Sheets.
+  btn.disabled = true;
+  feedback.textContent = "Enviando...";
+  try {
+    await fetch(SHEETS_URL, {
+      method: "POST",
+      mode: "no-cors", // Apps Script não devolve CORS; o envio ocorre mesmo assim.
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(dados),
+    });
+    sucesso();
+  } catch (err) {
+    feedback.textContent = "Não foi possível enviar agora. Tente novamente em instantes.";
+  } finally {
+    btn.disabled = false;
+  }
 });
 
 /* ===== Pix modal ===== */
 const modal = document.getElementById("pixModal");
-document.querySelectorAll("[data-pix]").forEach(btn =>
-  btn.addEventListener("click", () => modal.classList.add("open"))
-);
+const pixItem = document.getElementById("pixItem");
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-pix]");
+  if (!btn || btn.disabled) return;
+  const gift = btn.getAttribute("data-gift");
+  const cota = btn.getAttribute("data-cota");
+  if (gift) {
+    const valor = cota ? ` · ${BRL.format(Number(cota))} por cota` : "";
+    pixItem.textContent = `${gift}${valor}`;
+    pixItem.style.display = "block";
+  } else {
+    pixItem.style.display = "none";
+  }
+  modal.classList.add("open");
+});
 document.getElementById("pixClose").addEventListener("click", () => modal.classList.remove("open"));
 modal.addEventListener("click", (e) => { if (e.target === modal) modal.classList.remove("open"); });
 document.getElementById("pixKey").textContent = PIX_KEY;
