@@ -105,30 +105,6 @@ photos.forEach((id, i) => {
   galleryGrid.appendChild(fig);
 });
 
-/* ===== Gifts render ===== */
-const BRL = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
-const giftsGrid = document.getElementById("giftsGrid");
-GIFTS.forEach((g) => {
-  const pagas = g.cotas - g.restam;
-  const pct = g.cotas > 0 ? Math.round((pagas / g.cotas) * 100) : 0;
-  const esgotado = g.restam <= 0;
-
-  const card = document.createElement("div");
-  card.className = "gift__card reveal" + (esgotado ? " gift__card--done" : "");
-  card.innerHTML = `
-    ${g.priority ? '<span class="gift__badge" title="Item mais desejado">★</span>' : ""}
-    <div class="gift__photo"><img loading="lazy" src="${g.img}" alt="${g.nome}" /></div>
-    <h3>${g.nome}</h3>
-    <p class="gift__price">${BRL.format(g.valorCota)}</p>
-    <div class="gift__progress"><span style="width:${pct}%"></span></div>
-    <p class="gift__count">${esgotado ? "Presente completo! 💛" : `Restam: ${g.restam} de ${g.cotas}`}</p>
-    <button class="btn btn--outline" data-pix data-gift="${g.nome}" data-cota="${g.valorCota}" ${esgotado ? "disabled" : ""}>
-      ${esgotado ? "Concluído" : "Fazer Pix"}
-    </button>
-  `;
-  giftsGrid.appendChild(card);
-});
-
 /* ===== Scroll reveal ===== */
 const io = new IntersectionObserver((entries) => {
   entries.forEach(e => {
@@ -139,6 +115,50 @@ const io = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.15 });
 document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+
+/* ===== Gifts render ===== */
+const BRL = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
+const giftsGrid = document.getElementById("giftsGrid");
+
+function renderGifts(lista) {
+  giftsGrid.innerHTML = "";
+  lista.forEach((g) => {
+    const pagas = g.cotas - g.restam;
+    const pct = g.cotas > 0 ? Math.round((pagas / g.cotas) * 100) : 0;
+    const esgotado = g.restam <= 0;
+
+    const card = document.createElement("div");
+    card.className = "gift__card reveal" + (esgotado ? " gift__card--done" : "");
+    card.innerHTML = `
+      ${g.priority ? '<span class="gift__badge" title="Item mais desejado">★</span>' : ""}
+      <div class="gift__photo"><img loading="lazy" src="${g.img}" alt="${g.nome}" /></div>
+      <h3>${g.nome}</h3>
+      <p class="gift__price">${BRL.format(g.valorCota)}</p>
+      <div class="gift__progress"><span style="width:${pct}%"></span></div>
+      <p class="gift__count">${esgotado ? "Presente completo! 💛" : `Restam: ${g.restam} de ${g.cotas}`}</p>
+      <button class="btn btn--outline" data-pix data-gift="${g.nome}" data-cota="${g.valorCota}" ${esgotado ? "disabled" : ""}>
+        ${esgotado ? "Concluído" : "Fazer Pix"}
+      </button>
+    `;
+    giftsGrid.appendChild(card);
+    io.observe(card); // aplica a animação de reveal aos cards criados
+  });
+}
+
+/* Mostra primeiro os valores locais (fallback) e, se a planilha responder,
+   substitui pelos números atualizados de lá. */
+renderGifts(GIFTS);
+
+if (SHEETS_URL) {
+  fetch(SHEETS_URL)
+    .then((r) => r.json())
+    .then((data) => {
+      if (data && data.result === "ok" && Array.isArray(data.gifts) && data.gifts.length) {
+        renderGifts(data.gifts);
+      }
+    })
+    .catch(() => { /* mantém os valores locais se a planilha falhar */ });
+}
 
 /* ===== RSVP: gate de senha ===== */
 const gate = document.getElementById("rsvpGate");

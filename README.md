@@ -107,3 +107,39 @@ acompanha (e exporta para Excel quando quiser). Siga os passos:
 Se `SHEETS_URL` ficar vazio, o formulário continua funcionando, mas as respostas
 são salvas apenas no `localStorage` do navegador de quem preencheu (backup local,
 que você não consegue acessar). Para coletar de verdade, complete os passos acima.
+
+## Cotas dos presentes controladas pela planilha (automático)
+As quantidades de cotas podem vir da MESMA planilha, assim você atualiza o site
+só editando uma célula — sem mexer em código.
+
+1. Na planilha, crie uma segunda aba chamada **`Presentes`** (e renomeie a aba das
+   confirmações para **`RSVP`**, se ainda não tiver esse nome).
+2. Na aba **`Presentes`**, coloque estes cabeçalhos na linha 1:
+
+   | A: Nome | B: ValorCota | C: Cotas | D: Restam | E: Prioridade | F: Imagem |
+   |---|---|---|---|---|---|
+
+   Preencha uma linha por presente. Exemplo:
+
+   | Cama de casal box | 150 | 10 | 8 | SIM | https://... |
+
+   - **ValorCota**: valor de cada cota (número)
+   - **Cotas**: total de cotas do presente
+   - **Restam**: quantas ainda faltam — **é esta coluna que você edita**
+   - **Prioridade**: escreva `SIM` para destacar com o selo ★ (ou deixe vazio)
+   - **Imagem**: URL da foto (pode deixar vazio)
+
+3. Atualize o Apps Script com o novo conteúdo de `google-apps-script.gs` e
+   **reimplante** (Implantar → Gerenciar implantações → editar → Nova versão).
+   Mantendo a mesma implantação, a URL `/exec` não muda.
+
+4. Pronto. Quando confirmar que recebeu um Pix, **diminua o número em "Restam"**
+   na planilha. O site passa a mostrar a nova quantidade automaticamente (sem
+   reupload, sem mexer no código).
+
+> Os itens em `GIFTS` no `script.js` continuam servindo de **fallback**: se a
+> planilha estiver fora do ar, o site mostra esses valores. Mantenha-os parecidos
+> com os da planilha.
+
+> **Fluxo (Opção B):** o convidado faz o Pix e envia o comprovante → você confere
+> → edita "Restam" na planilha. A contagem reflete o que você realmente recebeu.
