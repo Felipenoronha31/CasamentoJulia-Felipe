@@ -24,15 +24,15 @@ const SHEETS_URL = "https://script.google.com/macros/s/AKfycbyWFVQg7nDxCNb_OCaeq
    Como o site é estático (GitHub Pages), a contagem NÃO muda sozinha.
    Quando receber uma contribuição, diminua "restam" e dê push. */
 const GIFTS = [
-  { nome: "Cama de casal box",      valorCota: 150, cotas: 10, restam: 10, img: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=600&q=80", priority: true },
-  { nome: "Geladeira frost free",   valorCota: 200, cotas: 10, restam: 10, img: "https://images.unsplash.com/photo-1584568694244-14fbdf83bd30?auto=format&fit=crop&w=600&q=80", priority: true },
-  { nome: "Máquina de lavar",       valorCota: 180, cotas: 10, restam: 10, img: "https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?auto=format&fit=crop&w=600&q=80", priority: true },
-  { nome: "Fogão 5 bocas",          valorCota: 120, cotas: 10, restam: 10, img: "https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=600&q=80", priority: false },
-  { nome: "Micro-ondas",            valorCota: 100, cotas: 10, restam: 10, img: "https://images.unsplash.com/photo-1574269909862-7e1d70bb8078?auto=format&fit=crop&w=600&q=80", priority: false },
-  { nome: "Jogo de panelas",        valorCota: 90,  cotas: 10, restam: 10, img: "https://images.unsplash.com/photo-1584990347449-39b3f3b2c38b?auto=format&fit=crop&w=600&q=80", priority: false },
-  { nome: "Jogo de cama casal",     valorCota: 80,  cotas: 10, restam: 10, img: "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=600&q=80", priority: false },
-  { nome: "Jogo de jantar",         valorCota: 100, cotas: 10, restam: 10, img: "https://images.unsplash.com/photo-1578474846511-04ba529f0b88?auto=format&fit=crop&w=600&q=80", priority: false },
-  { nome: "Cota para a Lua de Mel", valorCota: 150, cotas: 10, restam: 10, img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80", priority: true },
+  { nome: "Cama de casal box",      valorCota: 150, cotas: 10, restam: 10, img: "img/cama.jpg",         priority: true },
+  { nome: "Geladeira frost free",   valorCota: 200, cotas: 10, restam: 10, img: "img/geladeira.jpg",    priority: true },
+  { nome: "Máquina de lavar",       valorCota: 180, cotas: 10, restam: 10, img: "img/maquina-lavar.jpg", priority: true },
+  { nome: "Fogão 5 bocas",          valorCota: 120, cotas: 10, restam: 10, img: "img/fogao.jpg",        priority: false },
+  { nome: "Micro-ondas",            valorCota: 100, cotas: 10, restam: 10, img: "img/microondas.jpg",   priority: false },
+  { nome: "Jogo de panelas",        valorCota: 90,  cotas: 10, restam: 10, img: "img/panelas.jpg",      priority: false },
+  { nome: "Jogo de cama casal",     valorCota: 80,  cotas: 10, restam: 10, img: "img/jogo-cama.jpg",    priority: false },
+  { nome: "Jogo de jantar",         valorCota: 100, cotas: 10, restam: 10, img: "img/jogo-jantar.jpg",  priority: false },
+  { nome: "Cota para a Lua de Mel", valorCota: 150, cotas: 10, restam: 10, img: "img/lua-de-mel.jpg",   priority: true },
 ];
 
 /* ===== Loader ===== */
@@ -86,22 +86,24 @@ function tick() {
 tick();
 setInterval(tick, 1000);
 
-/* ===== Gallery (Unsplash placeholders, trocar pelas fotos reais) ===== */
+/* ===== Gallery =====
+   Fotos do casal. Suba os arquivos na pasta "img" do repositório e liste os
+   caminhos aqui. Ex: "img/casal1.jpg". Pode adicionar ou remover quantas quiser. */
 const photos = [
-  "1519741497674-611481863552",
-  "1511285560929-80b456fea0bc",
-  "1465495976277-4387d4b0b4c6",
-  "1583939003579-730e3918a45a",
-  "1522673607200-164d1b6ce486",
-  "1526047932273-341f2a7631f9",
-  "1537633552985-df8429e8048b",
-  "1591604466107-ec97de577aff",
+  "img/galeria1.jpg",
+  "img/galeria2.jpg",
+  "img/galeria3.jpg",
+  "img/galeria4.jpg",
+  "img/galeria5.jpg",
+  "img/galeria6.jpg",
+  "img/galeria7.jpg",
+  "img/galeria8.jpg",
 ];
 const galleryGrid = document.getElementById("galleryGrid");
-photos.forEach((id, i) => {
+photos.forEach((src, i) => {
   const fig = document.createElement("figure");
   fig.className = "reveal";
-  fig.innerHTML = `<img loading="lazy" src="https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=600&q=80" alt="Foto do casal ${i + 1}" />`;
+  fig.innerHTML = `<img loading="lazy" src="${src}" alt="Julia e Felipe - foto ${i + 1}" onerror="this.closest('figure').style.display='none'" />`;
   galleryGrid.appendChild(fig);
 });
 

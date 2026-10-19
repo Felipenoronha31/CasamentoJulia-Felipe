@@ -1,0 +1,48 @@
+PASTA DE IMAGENS DO SITE
+========================
+
+Coloque aqui as fotos do site. Os nomes dos arquivos precisam ser EXATAMENTE
+estes (tudo minúsculo, com a extensão .jpg). Se usar .png, troque também no
+script.js.
+
+------------------------------------------------------------
+GALERIA DO CASAL (seção "Galeria")
+------------------------------------------------------------
+  galeria1.jpg
+  galeria2.jpg
+  galeria3.jpg
+  galeria4.jpg
+  galeria5.jpg
+  galeria6.jpg
+  galeria7.jpg
+  galeria8.jpg
+
+Dica: as fotos da galeria ficam em formato "retrato" (vertical 3x4).
+Pode usar mais ou menos de 8 fotos — basta editar a lista "photos" no script.js.
+
+------------------------------------------------------------
+PRESENTES (seção "Lista de Presentes")
+------------------------------------------------------------
+  cama.jpg
+  geladeira.jpg
+  maquina-lavar.jpg
+  fogao.jpg
+  microondas.jpg
+  panelas.jpg
+  jogo-cama.jpg
+  jogo-jantar.jpg
+  lua-de-mel.jpg
+
+Dica: as fotos de presentes ficam em formato "paisagem" (horizontal 4x3).
+
+------------------------------------------------------------
+COMO SUBIR NO GITHUB
+------------------------------------------------------------
+1. No repositório, entre nesta pasta "img".
+2. Add file > Upload files.
+3. Arraste as fotos com os nomes acima.
+4. Commit.
+5. Abra o site e dê Ctrl + Shift + R para atualizar.
+
+Se o nome do arquivo não bater com o do script.js, a foto não aparece.
+Na galeria, uma foto que não existir é simplesmente ocultada (sem erro na tela).

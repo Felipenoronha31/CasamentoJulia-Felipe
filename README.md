@@ -35,14 +35,19 @@ python -m http.server 8000
 | Fotos da galeria | `script.js` → array `photos` (troque pelas suas imagens) |
 | Foto de fundo do Hero | `styles.css` → `.hero { background: ... }` |
 
-### Trocar as fotos pelas reais
-As imagens atuais são placeholders do Unsplash. Crie uma pasta `img/` e substitua:
+### Fotos (galeria e presentes)
+As fotos ficam na pasta **`img/`** do repositório. Os nomes de arquivo esperados
+estão listados em `img/LEIA-ME.txt`. Resumo:
 
-```js
-// script.js
-const photos = ["img/foto1.jpg", "img/foto2.jpg", ...];
-// e ajuste o template para: <img src="${id}" ...>
-```
+- **Galeria do casal:** `galeria1.jpg` … `galeria8.jpg` (formato retrato).
+- **Presentes:** `cama.jpg`, `geladeira.jpg`, `maquina-lavar.jpg`, `fogao.jpg`,
+  `microondas.jpg`, `panelas.jpg`, `jogo-cama.jpg`, `jogo-jantar.jpg`,
+  `lua-de-mel.jpg` (formato paisagem).
+
+Para trocar/adicionar: suba o arquivo em `img/` com o nome correspondente e, se
+mudar o nome ou a quantidade, ajuste a lista `photos` (galeria) ou `GIFTS`
+(presentes) no `script.js`. Se usar a planilha para os presentes, o caminho da
+foto vai na coluna **Imagem** (ex: `img/cama.jpg`).
 
 ## Publicar (grátis)
 - **Firebase Hosting**: `firebase init hosting` → `firebase deploy`
