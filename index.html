@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Julia & Felipe · 04.07.2027</title>
+  <meta name="description" content="Julia e Felipe vão se casar! 04 de julho de 2027 · Giardino di Menis. Confira todos os detalhes do nosso grande dia." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600&family=Great+Vibes&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ===== Loader ===== -->
+  <div class="loader" id="loader">
+    <div class="loader__inner">
+      <span class="loader__names">J <em>&</em> F</span>
+      <span class="loader__bar"><i></i></span>
+    </div>
+  </div>
+
+  <!-- ===== Navbar ===== -->
+  <header class="nav" id="nav">
+    <a href="#home" class="nav__brand">J <span>&</span> F</a>
+    <nav class="nav__links" id="navLinks">
+      <a href="#home">Início</a>
+      <a href="#historia">Nossa História</a>
+      <a href="#evento">O Evento</a>
+      <a href="#galeria">Galeria</a>
+      <a href="#presentes">Presentes</a>
+      <a href="#rsvp">Confirmar</a>
+    </nav>
+    <button class="nav__toggle" id="navToggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <!-- ===== Hero / Home ===== -->
+  <section class="hero" id="home">
+    <div class="hero__overlay"></div>
+    <div class="hero__content">
+      <p class="hero__pre reveal">Vamos nos casar</p>
+      <h1 class="hero__names reveal">Julia <span>&amp;</span> Felipe</h1>
+      <p class="hero__date reveal">04 de Julho de 2027 · Giardino di Menis</p>
+      <a href="#rsvp" class="btn btn--light reveal">Confirmar Presença</a>
+    </div>
+    <div class="hero__scroll">
+      <span></span>
+    </div>
+  </section>
+
+  <!-- ===== Countdown ===== -->
+  <section class="countdown" id="countdown">
+    <h2 class="section__script">Contagem regressiva</h2>
+    <p class="countdown__sub">para o nosso grande dia</p>
+    <div class="countdown__grid" id="countdownGrid">
+      <div class="countdown__box"><span id="cdDays">00</span><small>Dias</small></div>
+      <div class="countdown__box"><span id="cdHours">00</span><small>Horas</small></div>
+      <div class="countdown__box"><span id="cdMin">00</span><small>Minutos</small></div>
+      <div class="countdown__box"><span id="cdSec">00</span><small>Segundos</small></div>
+    </div>
+  </section>
+
+  <!-- ===== Nossa História ===== -->
+  <section class="story" id="historia">
+    <div class="section__head reveal">
+      <p class="section__eyebrow">O começo de tudo</p>
+      <h2 class="section__title">Nossa História</h2>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline__item reveal">
+        <div class="timeline__dot"></div>
+        <div class="timeline__card">
+          <span class="timeline__year">Set · Out 2024</span>
+          <h3>Como nos conhecemos</h3>
+          <p>Tudo começou no UNASP Fest. Começamos a conversar durante a Semana de Oração, cantando juntos, e ali nasceu a nossa história.</p>
+        </div>
+      </div>
+      <div class="timeline__item reveal">
+        <div class="timeline__dot"></div>
+        <div class="timeline__card">
+          <span class="timeline__year">12 Dez 2024</span>
+          <h3>Pedido de Namoro</h3>
+          <p>No dia 12 de dezembro veio o pedido de namoro, oficializando aquilo que o coração já sabia: queríamos caminhar juntos.</p>
+        </div>
+      </div>
+      <div class="timeline__item reveal">
+        <div class="timeline__dot"></div>
+        <div class="timeline__card">
+          <span class="timeline__year">30 Jun 2026</span>
+          <h3>O pedido</h3>
+          <p>De joelhos, com o coração acelerado e um sim que veio em lágrimas. Agora é oficial: vamos nos casar!</p>
+        </div>
+      </div>
+      <div class="timeline__item reveal">
+        <div class="timeline__dot"></div>
+        <div class="timeline__card">
+          <span class="timeline__year">04 Jul 2027</span>
+          <h3>O grande dia</h3>
+          <p>Cercados por quem amamos, diremos sim para a vida toda no Giardino di Menis.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Quote ===== -->
+  <section class="quote">
+    <div class="quote__inner reveal">
+      <p class="quote__text">"Eu sou do meu amado, e o meu amado é meu."</p>
+      <span class="quote__ref">Cânticos 6:3</span>
+    </div>
+  </section>
+
+  <!-- ===== O Evento / Detalhes ===== -->
+  <section class="event" id="evento">
+    <div class="section__head reveal">
+      <p class="section__eyebrow">Save the date</p>
+      <h2 class="section__title">O Evento</h2>
+    </div>
+
+    <div class="event__grid">
+      <div class="event__card reveal">
+        <div class="event__icon">💒</div>
+        <h3>Cerimônia &amp; Recepção</h3>
+        <p class="event__big">04 de Julho de 2027</p>
+        <p>Domingo · a partir das 16h00</p>
+        <p class="event__place">Giardino di Menis</p>
+      </div>
+      <div class="event__card reveal">
+        <div class="event__icon">📍</div>
+        <h3>Local</h3>
+        <p>Giardino di Menis</p>
+        <p>Um espaço ao ar livre cercado por jardins, onde celebraremos o nosso amor.</p>
+        <a class="btn btn--outline" href="https://www.google.com/maps/search/Giardino+di+Menis" target="_blank" rel="noopener">Ver no mapa</a>
+      </div>
+      <div class="event__card reveal">
+        <div class="event__icon">👗</div>
+        <h3>Dress Code</h3>
+        <p class="event__big">Traje Esporte Fino</p>
+        <p>Pedimos gentilmente que evitem as cores branco, off-white e tons muito claros, reservados à noiva.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Programação ===== -->
+  <section class="schedule" id="programacao">
+    <div class="section__head reveal">
+      <p class="section__eyebrow">Como será o dia</p>
+      <h2 class="section__title">Programação</h2>
+    </div>
+    <div class="schedule__list">
+      <div class="schedule__item reveal"><span class="schedule__time">16:00</span><div><h4>Recepção dos convidados</h4><p>Chegue com calma e aproveite o welcome drink.</p></div></div>
+      <div class="schedule__item reveal"><span class="schedule__time">16:30</span><div><h4>Cerimônia</h4><p>O momento mais esperado do nosso dia.</p></div></div>
+      <div class="schedule__item reveal"><span class="schedule__time">17:30</span><div><h4>Coquetel</h4><p>Fotos, brindes e muita conversa boa.</p></div></div>
+      <div class="schedule__item reveal"><span class="schedule__time">19:00</span><div><h4>Jantar</h4><p>Um menu preparado com carinho para vocês.</p></div></div>
+      <div class="schedule__item reveal"><span class="schedule__time">21:00</span><div><h4>Festa</h4><p>Pista aberta até o último convidado!</p></div></div>
+    </div>
+  </section>
+
+  <!-- ===== Galeria ===== -->
+  <section class="gallery" id="galeria">
+    <div class="section__head reveal">
+      <p class="section__eyebrow">Momentos</p>
+      <h2 class="section__title">Galeria</h2>
+    </div>
+    <div class="gallery__grid" id="galleryGrid"></div>
+  </section>
+
+  <!-- ===== Padrinhos ===== -->
+  <section class="party" id="padrinhos">
+    <div class="section__head reveal">
+      <p class="section__eyebrow">Ao nosso lado</p>
+      <h2 class="section__title">Padrinhos &amp; Madrinhas</h2>
+    </div>
+    <div class="party__grid party__grid--three">
+      <div class="party__col reveal">
+        <span class="party__side">Padrinhos &amp; Madrinhas</span>
+        <h3>da Julia</h3>
+        <ul>
+          <li>Maryane &amp; Cassio</li>
+          <li>Matheus &amp; Heloisa</li>
+          <li>Joice &amp; Kennedy</li>
+          <li>Elaine &amp; Joseque</li>
+          <li>Joabe &amp; Evelyn</li>
+        </ul>
+      </div>
+      <div class="party__col reveal">
+        <span class="party__side">Padrinhos &amp; Madrinhas</span>
+        <h3>do Felipe</h3>
+        <ul>
+          <li>Lucas &amp; Laura</li>
+          <li>Julia &amp; Bruno</li>
+          <li>Babu &amp; Carol</li>
+          <li>Gisele &amp; Rogério</li>
+          <li>Gisele &amp; Dalson</li>
+        </ul>
+      </div>
+      <div class="party__col reveal">
+        <span class="party__side">Cortejo</span>
+        <h3>Damas de Honra &amp; Cavalheiros</h3>
+        <ul>
+          <li>Silvia</li>
+          <li>Luan</li>
+          <li>Milena</li>
+          <li>Gabriel</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Presentes ===== -->
+  <section class="gifts" id="presentes">
+    <div class="section__head reveal">
+      <p class="section__eyebrow">Com carinho</p>
+      <h2 class="section__title">Lista de Presentes</h2>
+    </div>
+    <p class="gifts__intro reveal">A sua presença já é o maior presente que poderíamos receber. Mas, se desejar nos presentear, deixamos aqui algumas opções com todo o nosso carinho.</p>
+    <div class="gifts__grid">
+      <div class="gift__card reveal">
+        <div class="gift__icon">🍯</div>
+        <h3>Lua de Mel</h3>
+        <p>Ajude a tornar a nossa viagem dos sonhos inesquecível.</p>
+        <button class="btn btn--outline" data-pix>Contribuir via Pix</button>
+      </div>
+      <div class="gift__card reveal">
+        <div class="gift__icon">🏡</div>
+        <h3>Nosso Lar</h3>
+        <p>Itens para montar o nosso novo cantinho.</p>
+        <button class="btn btn--outline" data-pix>Contribuir via Pix</button>
+      </div>
+      <div class="gift__card reveal">
+        <div class="gift__icon">🎁</div>
+        <h3>Presente Livre</h3>
+        <p>Escolha um valor com o qual se sinta confortável.</p>
+        <button class="btn btn--outline" data-pix>Contribuir via Pix</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== RSVP ===== -->
+  <section class="rsvp" id="rsvp">
+    <div class="section__head reveal">
+      <p class="section__eyebrow">Esperamos por você</p>
+      <h2 class="section__title">Confirme sua Presença</h2>
+    </div>
+    <form class="rsvp__form reveal" id="rsvpForm">
+      <div class="field">
+        <label for="nome">Nome completo</label>
+        <input type="text" id="nome" name="nome" required placeholder="Seu nome" />
+      </div>
+      <div class="field">
+        <label>Você vai comparecer?</label>
+        <div class="radio-group">
+          <label class="radio"><input type="radio" name="presenca" value="sim" checked /> <span>Sim, estarei lá!</span></label>
+          <label class="radio"><input type="radio" name="presenca" value="nao" /> <span>Infelizmente não poderei</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label for="mensagem">Mensagem para os noivos (opcional)</label>
+        <textarea id="mensagem" name="mensagem" rows="3" placeholder="Deixe um recadinho 💛"></textarea>
+      </div>
+      <button type="submit" class="btn btn--dark">Enviar confirmação</button>
+      <p class="rsvp__feedback" id="rsvpFeedback" role="status"></p>
+    </form>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <h2 class="footer__names">Julia <span>&amp;</span> Felipe</h2>
+    <p class="footer__date">04 · 07 · 2027</p>
+    <p class="footer__tag">Feito com amor para celebrar o nosso dia.</p>
+  </footer>
+
+  <!-- ===== Pix Modal ===== -->
+  <div class="modal" id="pixModal" aria-hidden="true">
+    <div class="modal__box">
+      <button class="modal__close" id="pixClose" aria-label="Fechar">&times;</button>
+      <h3>Contribuir via Pix</h3>
+      <p>Use a chave abaixo para nos presentear. Muito obrigado! 💛</p>
+      <div class="pix__key">
+        <code id="pixKey">julia.felipe@casamento.com</code>
+        <button class="btn btn--outline" id="pixCopy">Copiar</button>
+      </div>
+    </div>
+  </div>
+
+  <a class="back-to-top" href="#home" id="backToTop" aria-label="Voltar ao topo">↑</a>
+
+  <script src="script.js"></script>
+</body>
+</html>
