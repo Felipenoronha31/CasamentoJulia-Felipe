@@ -119,9 +119,19 @@ const giftsGrid = document.getElementById("giftsGrid");
 function renderGifts(lista) {
   giftsGrid.innerHTML = "";
   lista.forEach((g) => {
+    const isCota = g.cotas > 1;
     const pagas = g.cotas - g.restam;
     const pct = g.cotas > 0 ? Math.round((pagas / g.cotas) * 100) : 0;
     const esgotado = g.restam <= 0;
+
+    const progressHtml = isCota
+      ? `
+        <div class="gift__progress"><span style="width:${pct}%"></span></div>
+        <p class="gift__count">${esgotado ? "Presente completo! 💛" : `Restam: ${g.restam} de ${g.cotas}`}</p>
+      `
+      : `
+        <p class="gift__count" style="margin-top:14px;">${esgotado ? "Presente já adquirido! 💛" : "Item único · Disponível"}</p>
+      `;
 
     const card = document.createElement("div");
     card.className = "gift__card reveal" + (esgotado ? " gift__card--done" : "");
@@ -130,9 +140,8 @@ function renderGifts(lista) {
       <div class="gift__photo"><img loading="lazy" src="${g.img}" alt="${g.nome}" /></div>
       <h3>${g.nome}</h3>
       <p class="gift__price">${BRL.format(g.valorCota)}</p>
-      <div class="gift__progress"><span style="width:${pct}%"></span></div>
-      <p class="gift__count">${esgotado ? "Presente completo! 💛" : `Restam: ${g.restam} de ${g.cotas}`}</p>
-      <button class="btn btn--outline" data-pix data-gift="${g.nome}" data-cota="${g.valorCota}" ${esgotado ? "disabled" : ""}>
+      ${progressHtml}
+      <button class="btn btn--outline" data-pix data-gift="${g.nome}" data-cota="${g.valorCota}" data-is-cota="${isCota}" ${esgotado ? "disabled" : ""}>
         ${esgotado ? "Concluído" : "Fazer Pix"}
       </button>
     `;
@@ -209,8 +218,10 @@ document.addEventListener("click", (e) => {
   if (!btn || btn.disabled) return;
   const gift = btn.getAttribute("data-gift");
   const cota = btn.getAttribute("data-cota");
+  const isCota = btn.getAttribute("data-is-cota") === "true";
   if (gift) {
-    const valor = cota ? ` · ${BRL.format(Number(cota))} por cota` : "";
+    const sufixo = isCota ? " por cota" : "";
+    const valor = cota ? ` · ${BRL.format(Number(cota))}${sufixo}` : "";
     pixItem.textContent = `${gift}${valor}`;
     pixItem.style.display = "block";
   } else {

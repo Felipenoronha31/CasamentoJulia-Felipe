@@ -118,11 +118,15 @@ só editando uma célula — sem mexer em código.
 
    | Cama de casal box | 150 | 10 | 8 | SIM | https://... |
 
-   - **ValorCota**: valor de cada cota (número)
-   - **Cotas**: total de cotas do presente
-   - **Restam**: quantas ainda faltam — **é esta coluna que você edita**
+   - **ValorCota**: valor de cada cota ou valor total do item (número)
+   - **Cotas**: total de cotas (coloque `1` se for um presente único, sem cotas)
+   - **Restam**: quantas ainda faltam — **é esta coluna que você edita** (para presente único: coloque `1` se disponível, `0` se já foi dado)
    - **Prioridade**: escreva `SIM` para destacar com o selo ★ (ou deixe vazio)
    - **Imagem**: URL da foto (pode deixar vazio)
+
+> **Presente único (sem divisão em cotas):**
+> Basta preencher **Cotas: 1** e **Restam: 1**, com o valor total no campo **ValorCota**.
+> O site automaticamente reconhecerá como presente único: não exibirá barra de progresso nem a frase "por cota", exibindo "Item único · Disponível". Quando alguém presentear, mude **Restam** para `0` na planilha.
 
 3. Atualize o Apps Script com o novo conteúdo de `google-apps-script.gs` e
    **reimplante** (Implantar → Gerenciar implantações → editar → Nova versão).
