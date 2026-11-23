@@ -39,15 +39,32 @@ function doPost(e) {
     var ss = SpreadsheetApp.getActiveSpreadsheet();
     var sheet = ss.getSheetByName(RSVP_SHEET) || ss.insertSheet(RSVP_SHEET);
 
+    var expectedHeaders = ["Data/Hora", "Nome (Titular)", "Vai comparecer?", "Total de Pessoas", "Acompanhantes / Filhos", "Mensagem"];
+
     if (sheet.getLastRow() === 0) {
-      sheet.appendRow(["Data/Hora", "Nome", "Vai comparecer?", "Mensagem"]);
+      sheet.appendRow(expectedHeaders);
+    } else {
+      // Se a planilha já tinha o cabeçalho antigo de 4 colunas ("Mensagem" na coluna D)
+      var currentHeaders = sheet.getRange(1, 1, 1, Math.max(sheet.getLastColumn(), 4)).getValues()[0];
+      if (currentHeaders[3] === "Mensagem") {
+        sheet.insertColumnsAfter(3, 2);
+        sheet.getRange(1, 4).setValue("Total de Pessoas");
+        sheet.getRange(1, 5).setValue("Acompanhantes / Filhos");
+        sheet.getRange(1, 2).setValue("Nome (Titular)");
+      }
     }
 
     var dados = JSON.parse(e.postData.contents);
+    var presenca = dados.presenca === "sim" ? "Sim" : "Não";
+    var total = presenca === "Sim" ? (Number(dados.totalPessoas) || 1) : 0;
+    var acompanhantes = dados.acompanhantes || "";
+
     sheet.appendRow([
       new Date(),
       dados.nome || "",
-      dados.presenca === "sim" ? "Sim" : "Não",
+      presenca,
+      total,
+      acompanhantes,
       dados.mensagem || ""
     ]);
 

@@ -91,7 +91,7 @@ acompanha (e exporta para Excel quando quiser). Siga os passos:
    const SHEETS_URL = "https://script.google.com/macros/s/..../exec";
    ```
 8. Faça commit/push dos arquivos. Pronto: cada confirmação vira uma linha na planilha
-   (Data/Hora, Nome, Vai comparecer?, Mensagem).
+   (Data/Hora, Nome (Titular), Vai comparecer?, Total de Pessoas, Acompanhantes / Filhos, Mensagem).
 
 > **Testar:** abra a URL `/exec` no navegador — deve responder "RSVP endpoint online".
 > Depois envie uma confirmação de teste no site e confira se apareceu na planilha.

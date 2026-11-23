@@ -196,14 +196,26 @@
     <!-- Formulário de confirmação -->
     <form class="rsvp__form reveal" id="rsvpForm">
       <div class="field">
-        <label for="nome">Nome completo</label>
-        <input type="text" id="nome" name="nome" required placeholder="Seu nome" />
+        <label for="nome">Seu nome completo</label>
+        <input type="text" id="nome" name="nome" required placeholder="Digite seu nome completo" />
       </div>
       <div class="field">
         <label>Você vai comparecer?</label>
         <div class="radio-group">
           <label class="radio"><input type="radio" name="presenca" value="sim" checked /> <span>Sim, estarei lá!</span></label>
           <label class="radio"><input type="radio" name="presenca" value="nao" /> <span>Infelizmente não poderei</span></label>
+        </div>
+      </div>
+      <!-- Acompanhantes e Filhos -->
+      <div class="field" id="companionsField">
+        <label>Acompanhantes / Filhos</label>
+        <p class="field__hint">Vai levar cônjuge, filhos ou acompanhantes? Adicione abaixo para reservarmos os lugares certos:</p>
+        <div class="companions__list" id="companionsList"></div>
+        <button type="button" class="btn btn--outline companions__add" id="btnAddCompanion">
+          + Adicionar acompanhante ou filho
+        </button>
+        <div class="companions__count" id="companionsCount">
+          Total confirmado: <strong>1 pessoa</strong> (apenas você)
         </div>
       </div>
       <div class="field">

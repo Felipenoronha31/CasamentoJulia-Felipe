@@ -165,16 +165,77 @@ if (SHEETS_URL) {
     .catch(() => { /* mantém os valores locais se a planilha falhar */ });
 }
 
-/* ===== RSVP: envio ===== */
+/* ===== RSVP: acompanhantes e envio ===== */
 const form = document.getElementById("rsvpForm");
 const feedback = document.getElementById("rsvpFeedback");
+const companionsField = document.getElementById("companionsField");
+const companionsList = document.getElementById("companionsList");
+const companionsCount = document.getElementById("companionsCount");
+const btnAddCompanion = document.getElementById("btnAddCompanion");
+
+function updateCompanionCount() {
+  const count = companionsList.querySelectorAll(".companion__row").length;
+  if (count === 0) {
+    companionsCount.innerHTML = "Total confirmado: <strong>1 pessoa</strong> (apenas você)";
+  } else if (count === 1) {
+    companionsCount.innerHTML = "Total confirmado: <strong>2 pessoas</strong> (você + 1 acompanhante)";
+  } else {
+    companionsCount.innerHTML = `Total confirmado: <strong>${count + 1} pessoas</strong> (você + ${count} acompanhantes)`;
+  }
+}
+
+// Alterna exibição de acompanhantes se a pessoa não for comparecer
+form.querySelectorAll('input[name="presenca"]').forEach((radio) => {
+  radio.addEventListener("change", (e) => {
+    if (e.target.value === "nao") {
+      companionsField.style.display = "none";
+    } else {
+      companionsField.style.display = "";
+    }
+  });
+});
+
+// Adicionar campo de acompanhante / filho
+btnAddCompanion.addEventListener("click", () => {
+  const row = document.createElement("div");
+  row.className = "companion__row";
+  row.innerHTML = `
+    <input type="text" name="acompanhante" placeholder="Nome completo do acompanhante ou filho" required />
+    <button type="button" class="companion__remove" title="Remover acompanhante" aria-label="Remover acompanhante">&times;</button>
+  `;
+  row.querySelector(".companion__remove").addEventListener("click", () => {
+    row.remove();
+    updateCompanionCount();
+  });
+  companionsList.appendChild(row);
+  updateCompanionCount();
+  row.querySelector("input").focus();
+});
+
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const btn = form.querySelector('button[type="submit"]');
   const nome = document.getElementById("nome").value.trim();
   const presenca = form.querySelector('input[name="presenca"]:checked').value;
   const mensagem = document.getElementById("mensagem").value.trim();
-  const dados = { nome, presenca, mensagem, data: new Date().toISOString() };
+
+  // Coleta lista de acompanhantes
+  const companionInputs = companionsList.querySelectorAll('input[name="acompanhante"]');
+  const companionNames = Array.from(companionInputs)
+    .map(inp => inp.value.trim())
+    .filter(val => val.length > 0);
+
+  const totalPessoas = presenca === "sim" ? (1 + companionNames.length) : 0;
+  const acompanhantes = presenca === "sim" ? companionNames.join(", ") : "";
+
+  const dados = {
+    nome,
+    presenca,
+    totalPessoas,
+    acompanhantes,
+    mensagem,
+    data: new Date().toISOString()
+  };
 
   // Backup local (caso a planilha falhe ou ainda não esteja configurada).
   const list = JSON.parse(localStorage.getItem("rsvp") || "[]");
@@ -183,10 +244,17 @@ form.addEventListener("submit", async (e) => {
 
   const primeiroNome = nome.split(" ")[0];
   const sucesso = () => {
-    feedback.textContent = presenca === "sim"
-      ? `Obrigado, ${primeiroNome}! Sua presença foi confirmada. 💛`
-      : `Que pena, ${primeiroNome}. Sentiremos sua falta, obrigado por avisar.`;
+    if (presenca === "sim") {
+      feedback.textContent = companionNames.length > 0
+        ? `Obrigado, ${primeiroNome}! Presença confirmada para ${totalPessoas} pessoas. 💛`
+        : `Obrigado, ${primeiroNome}! Sua presença foi confirmada. 💛`;
+    } else {
+      feedback.textContent = `Que pena, ${primeiroNome}. Sentiremos sua falta, obrigado por avisar.`;
+    }
     form.reset();
+    companionsList.innerHTML = "";
+    updateCompanionCount();
+    companionsField.style.display = "";
   };
 
   // Sem planilha configurada: só o backup local.
