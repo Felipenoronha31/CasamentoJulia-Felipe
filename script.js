@@ -2,12 +2,6 @@
 const WEDDING_DATE = new Date("2027-07-04T16:00:00-03:00");
 const PIX_KEY = "julia.felipe@casamento.com";
 
-/* Senhas de convite aceitas (case-insensitive).
-   Observação: por ser um site estático (GitHub Pages), a validação acontece no
-   navegador — não é segurança real, apenas organização dos convidados.
-   Adicione quantas quiser à lista. */
-const INVITE_PASSWORDS = ["F4J45"];
-
 /* URL do Google Apps Script que recebe as confirmações e grava na planilha.
    Siga o passo a passo no README (seção "Coletar confirmações no Google Sheets")
    e cole aqui a URL que termina em /exec. Enquanto estiver vazio, as
@@ -162,31 +156,9 @@ if (SHEETS_URL) {
     .catch(() => { /* mantém os valores locais se a planilha falhar */ });
 }
 
-/* ===== RSVP: gate de senha ===== */
-const gate = document.getElementById("rsvpGate");
-const gateFeedback = document.getElementById("gateFeedback");
+/* ===== RSVP: envio ===== */
 const form = document.getElementById("rsvpForm");
 const feedback = document.getElementById("rsvpFeedback");
-
-const normalized = INVITE_PASSWORDS.map(p => p.trim().toLowerCase());
-
-gate.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const tentativa = document.getElementById("senha").value.trim().toLowerCase();
-  if (normalized.includes(tentativa)) {
-    gate.hidden = true;
-    form.hidden = false;
-    form.classList.add("in");
-    document.getElementById("nome").focus();
-  } else {
-    gateFeedback.textContent = "Senha incorreta. Confira o convite e tente novamente.";
-    gate.classList.remove("shake");
-    void gate.offsetWidth; // reinicia a animação
-    gate.classList.add("shake");
-  }
-});
-
-/* ===== RSVP: envio ===== */
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const btn = form.querySelector('button[type="submit"]');

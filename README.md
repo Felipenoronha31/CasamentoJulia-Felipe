@@ -28,7 +28,6 @@ python -m http.server 8000
 |---|---|
 | Data do casamento | `script.js` → `WEDDING_DATE` |
 | Chave Pix | `script.js` → `PIX_KEY` |
-| Senha(s) do convite | `script.js` → `INVITE_PASSWORDS` (lista) |
 | Itens da lista de presentes | `script.js` → `GIFTS` (nome, valor, img, priority) |
 | Textos (história, programação, padrinhos) | `index.html` |
 | Cores e fontes | `styles.css` → bloco `:root` |
@@ -53,15 +52,6 @@ foto vai na coluna **Imagem** (ex: `img/cama.jpg`).
 - **Firebase Hosting**: `firebase init hosting` → `firebase deploy`
 - **Netlify / Vercel**: arraste a pasta ou conecte o repositório
 - **GitHub Pages**: suba os arquivos e ative o Pages
-
-## Confirmação com senha
-A seção "Confirmar Presença" pede uma senha do convite antes de liberar o formulário.
-As senhas aceitas ficam em `script.js` → `INVITE_PASSWORDS` (pode colocar várias).
-
-> **Atenção:** como o site é estático (GitHub Pages), a senha é validada no navegador
-> e fica visível para quem inspecionar o código-fonte. Serve para organizar os
-> convidados, não como segurança real. Para uma senha realmente secreta seria
-> necessário um backend.
 
 ## Lista de presentes (sistema de cotas)
 Os itens ficam em `script.js` → `GIFTS`. Cada presente é dividido em cotas, para
