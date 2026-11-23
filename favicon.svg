@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <circle cx="32" cy="32" r="30" fill="#f6f5f0" />
+  <circle cx="32" cy="32" r="27.5" fill="none" stroke="#3f4a2a" stroke-width="2" />
+  <text x="32" y="39" text-anchor="middle" font-family="'Cormorant Garamond', Garamond, Georgia, serif">
+    <tspan fill="#3f4a2a" font-weight="700" font-size="23">J</tspan>
+    <tspan fill="#5a4a7a" font-style="italic" font-size="19"> &amp; </tspan>
+    <tspan fill="#3f4a2a" font-weight="700" font-size="23">F</tspan>
+  </text>
+</svg>
